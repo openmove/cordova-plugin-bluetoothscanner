@@ -70,9 +70,9 @@ public class BluetoothScanner extends CordovaPlugin {
                 callbackContext.sendPluginResult(result);
             }
 
-            PluginResult result = new PluginResult(PluginResult.Status.OK, null);
-            result.setKeepCallback(false);
-            callbackContext.sendPluginResult(result);
+            PluginResult out = new PluginResult(PluginResult.Status.OK, "");
+            out.setKeepCallback(false);
+            callbackContext.sendPluginResult(out);
         }
 
         return true;
