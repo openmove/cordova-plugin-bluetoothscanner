@@ -74,6 +74,8 @@ public class BluetoothScanner extends CordovaPlugin {
 
             callbackContext.success();
         }
+
+        return true;
     }
 
     private String bluetoothDeviceToString(BluetoothDevice btDevice) {
