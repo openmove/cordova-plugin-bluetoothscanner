@@ -44,7 +44,7 @@ public class BluetoothHelper {
         }
     };
 
-    private List<BluetoothDevice> foundedDevices = new ArrayList<>();
+    private List<BluetoothDevice> foundedDevices = new ArrayList<BluetoothDevice>();
     private OnBluetoothDeviceFound onBluetoothDeviceFound;
     private OnBluetoothScan onBluetoothScan;
 

@@ -1,11 +1,11 @@
 module.exports = {
-    startScan: function (successCallback, errorCallback, packageName) {
-        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "startScan", [packageName]);
+    startScan: function (successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "startScan", []);
     },
-    stopScan: function (successCallback, errorCallback, packageName) {
-        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "stopScan", [packageName]);
+    stopScan: function (successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "stopScan", []);
     },
-    getFoundedDevices: function (successCallback, errorCallback, packageName) {
-        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "getFoundedDevices", [packageName]);
+    getFoundedDevices: function (successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "BluetoothScanner", "getFoundedDevices", []);
     }
 };
