@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-bluetoothscanner",
+  "name": "cordova-plugin-bluetoothscannerclassic",
   "version": "1.0.0",
   "description": "",
   "cordova": {
-    "id": "cordova-plugin-bluetoothscanner",
+    "id": "cordova-plugin-bluetoothscannerclassic",
     "platforms": [
       "android"
     ]
