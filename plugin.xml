@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-bluetoothscanner" version="1.0.0">
+
+  <name>BluetoothScanner</name>
+
+  <engines>
+    <engine name="cordova" version=">=3.4.0" />
+  </engines>
+
+  <asset src="www/bluetoothscanner.js" target="js/bluetoothscanner.js" />
+  
+  <js-module src="www/bluetoothscanner.js" name="bluetoothscanner">
+    <clobbers target="bluetoothscanner" />
+  </js-module>
+
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="BluetoothScanner">
+        <param name="android-package" value="com.openmove.bluetoothscanner.BluetoothScanner" />
+      </feature>
+    </config-file>
+    <source-file src="src/android/BluetoothScanner.java" target-dir="src/com/openmove/bluetoothscanner/" />
+    <source-file src="src/android/BluetoothHelper.java" target-dir="src/com/openmove/bluetoothscanner/" />
+    <source-file src="src/android/OnBluetoothDeviceFound.java" target-dir="src/com/openmove/bluetoothscanner/" />
+    <source-file src="src/android/OnBluetoothScan.java" target-dir="src/com/openmove/bluetoothscanner/" />
+  </platform>
+
+
+</plugin>

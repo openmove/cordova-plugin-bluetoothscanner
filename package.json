@@ -1,0 +1,26 @@
+{
+  "name": "cordova-plugin-bluetoothscanner",
+  "version": "1.0.0",
+  "description": "",
+  "cordova": {
+    "id": "cordova-plugin-bluetoothscanner",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openmove/cordova-plugin-bluetoothscanner.git"
+  },
+  "keywords": [
+    "cordova",
+    "plugin",
+    "bluetooth"
+  ],
+  "author": "OpenMove team",
+  "license": "Apache-2",
+  "bugs": {
+    "url": "https://github.com/openmove/cordova-plugin-bluetoothscanner-plugin"
+  },
+  "homepage": "https://openmove.com"
+}
