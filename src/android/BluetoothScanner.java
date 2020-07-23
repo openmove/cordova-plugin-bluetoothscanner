@@ -13,7 +13,7 @@ public class BluetoothScanner extends CordovaPlugin {
     String TAG = "BluetoothScanner";
 
     @Override
-    public boolean execute(String action, JSONArray data, CallbackContext callbackContext){
+    public boolean execute(String action, JSONArray data, final CallbackContext callbackContext){
         Log.e(TAG, action);
 
         if (action.equals("startScan")) {
@@ -22,19 +22,25 @@ public class BluetoothScanner extends CordovaPlugin {
             bluetoothHelper.setOnBluetoothDeviceFound(new OnBluetoothDeviceFound() {
                 @Override
                 public void onDeviceFound(BluetoothDevice bluetoothDevice) {
-                    callbackContext.success(bluetoothDeviceToString(bluetoothDevice));
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, bluetoothDeviceToString(bluetoothDevice));
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
                 }
             });
 
             bluetoothHelper.setOnBluetoothScan(new OnBluetoothScan() {
                 @Override
                 public void onStart() {
-                    callbackContext.success(String.format("{status: %s}", "start"));
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, String.format("{status: %s}", "start"));
+                    result.setKeepCallback(true);
+                    callbackContext.sendPluginResult(result);
                 }
     
                 @Override
                 public void onEnd() {
-                    callbackContext.success(String.format("{status: %s}", "end"));
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, String.format("{status: %s}", "end"));
+                    result.setKeepCallback(false);
+                    callbackContext.sendPluginResult(result);
                 }
             });
 
@@ -48,19 +54,9 @@ public class BluetoothScanner extends CordovaPlugin {
         if (action.equals("stopScan")) {
             BluetoothHelper bluetoothHelper = BluetoothHelper.getInstance();
 
-            bluetoothHelper.setOnBluetoothScan(new OnBluetoothScan() {
-                @Override
-                public void onStart() {
-                    callbackContext.success(String.format("{status: %s}", "start"));
-                }
-    
-                @Override
-                public void onEnd() {
-                    callbackContext.success(String.format("{status: %s}", "end"));
-                }
-            });
-
             bluetoothHelper.stopScan(cordova.getActivity());
+
+            callbackContext.success();
         }
 
         if (action.equals("getFoundedDevices")) {
@@ -69,10 +65,14 @@ public class BluetoothScanner extends CordovaPlugin {
             List<BluetoothDevice> btDevices = bluetoothHelper.getFoundedDevices();
         
             for (BluetoothDevice foundedDevice : btDevices) {
-                callbackContext.success(bluetoothDeviceToString(foundedDevice));
+                PluginResult result = new PluginResult(PluginResult.Status.OK, bluetoothDeviceToString(foundedDevice));
+                result.setKeepCallback(true);
+                callbackContext.sendPluginResult(result);
             }
 
-            callbackContext.success();
+            PluginResult result = new PluginResult(PluginResult.Status.OK, null);
+            result.setKeepCallback(false);
+            callbackContext.sendPluginResult(result);
         }
 
         return true;
