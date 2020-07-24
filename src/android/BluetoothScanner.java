@@ -3,6 +3,7 @@ package com.openmove.bluetoothscanner;
 import org.apache.cordova.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONException;
 import android.util.Log;
 import android.bluetooth.BluetoothDevice;
 import com.openmove.bluetoothscanner.BluetoothHelper;
@@ -13,7 +14,7 @@ public class BluetoothScanner extends CordovaPlugin {
     String TAG = "BluetoothScanner";
 
     @Override
-    public boolean execute(String action, JSONArray data, final CallbackContext callbackContext){
+    public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) {
         Log.e(TAG, action);
 
         if (action.equals("startScan")) {
@@ -22,7 +23,8 @@ public class BluetoothScanner extends CordovaPlugin {
             bluetoothHelper.setOnBluetoothDeviceFound(new OnBluetoothDeviceFound() {
                 @Override
                 public void onDeviceFound(BluetoothDevice bluetoothDevice) {
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, bluetoothDeviceToString(bluetoothDevice));
+                    JSONObject resObj = bluetoothDeviceToJson(bluetoothDevice);
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
                 }
@@ -31,14 +33,16 @@ public class BluetoothScanner extends CordovaPlugin {
             bluetoothHelper.setOnBluetoothScan(new OnBluetoothScan() {
                 @Override
                 public void onStart() {
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, String.format("{status: %s}", "start"));
+                    JSONObject resObj = stringToJson('{status: "start"}');
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
                 }
     
                 @Override
                 public void onEnd() {
-                    PluginResult result = new PluginResult(PluginResult.Status.OK, String.format("{status: %s}", "end"));
+                    JSONObject resObj = stringToJson('{status: "end"}');
+                    PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(false);
                     callbackContext.sendPluginResult(result);
                 }
@@ -65,7 +69,8 @@ public class BluetoothScanner extends CordovaPlugin {
             List<BluetoothDevice> btDevices = bluetoothHelper.getFoundedDevices();
         
             for (BluetoothDevice foundedDevice : btDevices) {
-                PluginResult result = new PluginResult(PluginResult.Status.OK, bluetoothDeviceToString(foundedDevice));
+                JSONObject resObj = bluetoothDeviceToJson(foundedDevice);
+                PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                 result.setKeepCallback(true);
                 callbackContext.sendPluginResult(result);
             }
@@ -78,7 +83,25 @@ public class BluetoothScanner extends CordovaPlugin {
         return true;
     }
 
-    private String bluetoothDeviceToString(BluetoothDevice btDevice) {
-        return String.format("{address: %s}", btDevice.getAddress());
+    private JSONObject stringToJson(String obj) {
+        JSONObject out = null;
+        try {
+            out = new JSONObject(obj);
+        }catch(JSONException e) {
+
+        }
+
+        return out;
+    }
+
+    private JSONObject bluetoothDeviceToJson(BluetoothDevice device) {
+        JSONObject out = new JSONObject();
+        try {
+            out.put("address", device.getAddress());
+        }catch(JSONException e) {
+
+        }
+
+        return out;
     }
 }

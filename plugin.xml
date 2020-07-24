@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-bluetoothscannerclassic" version="1.0.11">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-bluetoothscannerclassic" version="1.0.18">
 
   <name>BluetoothScanner</name>
 
