@@ -19,6 +19,7 @@ public class BluetoothHelper {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
                 BluetoothDevice thisDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -37,12 +38,18 @@ public class BluetoothHelper {
             }
 
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+
+                isScanning = true;
+
                 if (onBluetoothScan != null) {
                     onBluetoothScan.onStart();
                 }
             }
 
             if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+
+                isScanning = false;
+
                 if (onBluetoothScan != null) {
                     onBluetoothScan.onEnd();
                 }
@@ -53,6 +60,7 @@ public class BluetoothHelper {
     private List<MyBluetoothDevice> foundedDevices = new ArrayList<MyBluetoothDevice>();
     private OnBluetoothDeviceFound onBluetoothDeviceFound;
     private OnBluetoothScan onBluetoothScan;
+    private Boolean isScanning = false;
 
     private BluetoothHelper() {
 
@@ -84,6 +92,10 @@ public class BluetoothHelper {
             return false;
         }
 
+        if (isScanning) {
+            forceStopScan(context);
+        }
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -97,10 +109,7 @@ public class BluetoothHelper {
     }
 
     public void stopScan(Context context) {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothAdapter.cancelDiscovery();
-
-        context.unregisterReceiver(receiver);
+        forceStopScan(context);
     }
 
     public List<MyBluetoothDevice> getFoundedDevices() {
@@ -114,5 +123,14 @@ public class BluetoothHelper {
 
     public void setOnBluetoothScan(OnBluetoothScan onBluetoothScan) {
         this.onBluetoothScan = onBluetoothScan;
+    }
+
+    private void forceStopScan(Context context) {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter.cancelDiscovery();
+
+        isScanning = false;
+
+        context.unregisterReceiver(receiver);
     }
 }
