@@ -22,7 +22,7 @@ public class BluetoothScanner extends CordovaPlugin {
 
             bluetoothHelper.setOnBluetoothDeviceFound(new OnBluetoothDeviceFound() {
                 @Override
-                public void onDeviceFound(BluetoothDevice bluetoothDevice) {
+                public void onDeviceFound(MyBluetoothDevice bluetoothDevice) {
                     JSONObject resObj = bluetoothDeviceToJson(bluetoothDevice);
                     PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(true);
@@ -33,7 +33,7 @@ public class BluetoothScanner extends CordovaPlugin {
             bluetoothHelper.setOnBluetoothScan(new OnBluetoothScan() {
                 @Override
                 public void onStart() {
-                    JSONObject resObj = stringToJson('{status: "start"}');
+                    JSONObject resObj = stringToJson("{status: \"start\"}");
                     PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(true);
                     callbackContext.sendPluginResult(result);
@@ -41,7 +41,7 @@ public class BluetoothScanner extends CordovaPlugin {
     
                 @Override
                 public void onEnd() {
-                    JSONObject resObj = stringToJson('{status: "end"}');
+                    JSONObject resObj = stringToJson("{status: \"end\"}");
                     PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                     result.setKeepCallback(false);
                     callbackContext.sendPluginResult(result);
@@ -66,9 +66,9 @@ public class BluetoothScanner extends CordovaPlugin {
         if (action.equals("getFoundedDevices")) {
             BluetoothHelper bluetoothHelper = BluetoothHelper.getInstance();
 
-            List<BluetoothDevice> btDevices = bluetoothHelper.getFoundedDevices();
+            List<MyBluetoothDevice> btDevices = bluetoothHelper.getFoundedDevices();
         
-            for (BluetoothDevice foundedDevice : btDevices) {
+            for (MyBluetoothDevice foundedDevice : btDevices) {
                 JSONObject resObj = bluetoothDeviceToJson(foundedDevice);
                 PluginResult result = new PluginResult(PluginResult.Status.OK, resObj);
                 result.setKeepCallback(true);
@@ -94,10 +94,11 @@ public class BluetoothScanner extends CordovaPlugin {
         return out;
     }
 
-    private JSONObject bluetoothDeviceToJson(BluetoothDevice device) {
+    private JSONObject bluetoothDeviceToJson(MyBluetoothDevice device) {
         JSONObject out = new JSONObject();
         try {
             out.put("address", device.getAddress());
+            out.put("rssi", device.getRssi());
         }catch(JSONException e) {
 
         }

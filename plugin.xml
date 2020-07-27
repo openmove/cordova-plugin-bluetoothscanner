@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-bluetoothscannerclassic" version="1.0.18">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" id="cordova-plugin-bluetoothscannerclassic" version="1.0.20">
 
   <name>BluetoothScanner</name>
 
@@ -23,6 +23,7 @@
     <source-file src="src/android/BluetoothHelper.java" target-dir="src/com/openmove/bluetoothscanner/" />
     <source-file src="src/android/OnBluetoothDeviceFound.java" target-dir="src/com/openmove/bluetoothscanner/" />
     <source-file src="src/android/OnBluetoothScan.java" target-dir="src/com/openmove/bluetoothscanner/" />
+    <source-file src="src/android/MyBluetoothDevice.java" target-dir="src/com/openmove/bluetoothscanner/" />
     <config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="android.permission.BLUETOOTH" />
       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />

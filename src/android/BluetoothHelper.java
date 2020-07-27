@@ -1,7 +1,6 @@
 package com.openmove.bluetoothscanner;
 
 import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -22,11 +21,18 @@ public class BluetoothHelper {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                foundedDevices.add(device);
+                BluetoothDevice thisDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
 
-                if (onBluetoothDeviceFound != null) {
-                    onBluetoothDeviceFound.onDeviceFound(device);
+                if (thisDevice != null) {
+                    MyBluetoothDevice device = new MyBluetoothDevice(thisDevice.getAddress());
+                    device.setRssi(rssi);
+
+                    foundedDevices.add(device);
+
+                    if (onBluetoothDeviceFound != null) {
+                        onBluetoothDeviceFound.onDeviceFound(device);
+                    }
                 }
             }
 
@@ -44,7 +50,7 @@ public class BluetoothHelper {
         }
     };
 
-    private List<BluetoothDevice> foundedDevices = new ArrayList<BluetoothDevice>();
+    private List<MyBluetoothDevice> foundedDevices = new ArrayList<MyBluetoothDevice>();
     private OnBluetoothDeviceFound onBluetoothDeviceFound;
     private OnBluetoothScan onBluetoothScan;
 
@@ -97,8 +103,8 @@ public class BluetoothHelper {
         context.unregisterReceiver(receiver);
     }
 
-    public List<BluetoothDevice> getFoundedDevices() {
-        List<BluetoothDevice> out = new ArrayList<BluetoothDevice> (foundedDevices);
+    public List<MyBluetoothDevice> getFoundedDevices() {
+        List<MyBluetoothDevice> out = new ArrayList<MyBluetoothDevice> (foundedDevices);
         return out;
     }
 
